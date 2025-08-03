@@ -1,10 +1,10 @@
 import datetime
 
-from main_backend.ask_gemini import ask_gemini
-from main_backend.answer_methods.bash_method import bash_method
-from main_backend.answer_methods.file_method import file_method
-from main_backend.answer_methods.recursive_bash import recursive_bash
-from main_backend.answer_methods.recursive_chat import recursive_chat
+from backend.ask_gemini import ask_gemini
+from backend.answer_methods.bash_method import bash_method
+from backend.answer_methods.file_method import file_method
+from backend.answer_methods.recursive_bash import recursive_bash
+from backend.answer_methods.recursive_chat import recursive_chat
 
 
 class AIBackend:
