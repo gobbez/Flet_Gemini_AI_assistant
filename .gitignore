@@ -1,0 +1,12 @@
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+dist/
+build/
+.cache/
+.idea/
+__pycache__/
+
+keys.py
