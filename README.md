@@ -8,6 +8,12 @@ It can answer and execute commands in succession until your task is completed.
 
 ---
 
+## 💪 Updates
+
+- Due to short time, the recursive_chat isn't working anymore. I will update it asap.
+- Added different chats. In a recent future each chat will be independent and there will be
+  different AIs for each one.
+
 ## 🌟 Overview
 
 This project is an **AI assistant designed for personal use**,  

@@ -10,13 +10,14 @@ from backend.answer_methods.recursive_chat import recursive_chat
 class AIBackend:
     def __init__(self):
         self.user_text = ''
+        self.current_chat = ''
         self.response = ''
         self.history = []
         self.h_time = datetime.datetime.now().strftime("%Y-%m-%d__%H-%M-%S")
         self.is_recursive = True
-        self.task = ''
-        self.memory = []
-        self.number = 0
+        self.task = {}
+        self.memory = {}
+        self.number = {}
 
     def save_history(self, context):
         """
@@ -48,7 +49,7 @@ class AIBackend:
 
         # Recursive bash loop
         elif msg.startswith("-:r"):
-            answer = await recursive_bash(self)
+            answer = await recursive_bash(self, self.current_chat)
             return answer
 
         # Default mode

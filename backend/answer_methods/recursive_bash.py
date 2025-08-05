@@ -3,10 +3,18 @@ from backend.ask_gemini import ask_gemini
 from backend.answer_methods.bash_method import bash_method
 
 
-async def recursive_bash(user_data):
-    memory = user_data.memory
+async def recursive_bash(user_data, current_chat):
+    if current_chat not in user_data.memory:
+        user_data.memory[current_chat] = []
+    if current_chat not in user_data.task:
+        user_data.task[current_chat] = ""
+    if current_chat not in user_data.number:
+        user_data.number[current_chat] = 0
+
     task = user_data.user_text[3:].strip()
-    number = user_data.number
+    user_data.task[current_chat] = task
+    number = user_data.number[current_chat]
+    memory = user_data.memory[current_chat]
 
     context_text = (
         f"User request: {task}\n"
@@ -19,11 +27,12 @@ async def recursive_bash(user_data):
     full_output = ""
 
     number += 1
+    user_data.number[current_chat] = number
+
     full_context = f"{context_text}\nPrevious context:\n" + "\n".join(memory)
     gemini_response = await ask_gemini(full_context)
     command = gemini_response['response'].strip().replace("`", "")
 
-    # Call bash_method starting the command with :
     bash_output = bash_method(":" + command)
     output = bash_output['response']
 
@@ -41,22 +50,24 @@ async def recursive_bash(user_data):
 
     if "DONE" in done_check.upper():
         full_output += f"DONE \n{done_check}"
-        answer = {
-            "is_recursive": False,
-            "response": full_output,
-            "task": "",
-            "memory": [],
-            "number": 0,
-        }
+        is_recursive = False
+
+        # Reset for this chat
+        user_data.memory[current_chat] = []
+        user_data.task[current_chat] = ""
+        user_data.number[current_chat] = 0
+
     else:
         full_output += f"Continuing...\n"
-        answer = {
-            "is_recursive": True,
-            "response": full_output,
-            "task": task,
-            "memory": memory,
-            "number": number,
-        }
+        is_recursive = True
+
+    answer = {
+        "is_recursive": is_recursive,
+        "response": full_output,
+        "task": user_data.task,
+        "memory": user_data.memory,
+        "number": user_data.number,
+    }
 
     await asyncio.sleep(3)
     return answer
