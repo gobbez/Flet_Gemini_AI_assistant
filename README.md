@@ -1,6 +1,5 @@
-# 🤖 My Personal AI Assistant
+# 🤖 Skybound
 
-My personal AI assistant: 
 A local **Flet** web app powered by **Google Gemini** for intelligent conversations 
 and direct **bash command execution**.  
 
@@ -16,7 +15,7 @@ It can answer and execute commands in succession until your task is completed.
 
 ## 🌟 Overview
 
-This project is an **AI assistant designed for personal use**,  
+This is an **AI chat framework designed for personal use**,  
 transforming your local device into a **powerful hub** for AI-driven productivity and automation.
 
 Built as a local web application with **Flet**,  
@@ -43,7 +42,7 @@ I disclaim any liability for unintended consequences resulting from execution.
   intuitive chat interface hosted locally on your machine.
 
 - **Google Gemini Integration**  
-  Leverage the power of Google's Gemini Pro model for intelligent 
+  Leverage the power of Google's Gemini model for intelligent 
   and context-aware conversations.
 
 - **Direct Bash Command Execution (:)**  
