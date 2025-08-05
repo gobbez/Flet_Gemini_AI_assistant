@@ -1,4 +1,4 @@
-# 🤖 Skybound
+# 🤖 Skybound AI
 
 A local **Flet** web app powered by **Google Gemini** for intelligent conversations 
 and direct **bash command execution**.  
