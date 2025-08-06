@@ -1,6 +1,6 @@
 # 🤖 Skybound AI
 
-A local **Flet** web app powered by **Google Gemini** for intelligent conversations 
+A local **Flet** web app framework powered by **Google Gemini** for intelligent conversations 
 and direct **bash command execution**.  
 
 It can answer and execute commands in succession until your task is completed.
@@ -9,9 +9,10 @@ It can answer and execute commands in succession until your task is completed.
 
 ## 💪 Updates
 
-- Due to short time, the recursive_chat isn't working anymore. I will update it asap.
-- Added different chats. In a recent future each chat will be independent and there will be
-  different AIs for each one.
+- Added different chats. Each chat is independent and doesn't have the memory of the others.
+- Each AI will write messages on their own chat
+- Everything is working fine, but if you talk with 2+ chats simultaneously Gemini 
+  will reach a time-out.
 
 ## 🌟 Overview
 
@@ -45,15 +46,16 @@ I disclaim any liability for unintended consequences resulting from execution.
   Leverage the power of Google's Gemini model for intelligent 
   and context-aware conversations.
 
+- **Independent AI Chats**
+  Each chat has its own memory and history and cannot access the memory of others.
+
 - **Direct Bash Command Execution (:)**  
   Execute shell commands directly from the chat, 
   enabling powerful system automation and fast task execution.
 
 - **Recursive Iterations (-r or -:r)**
-  
   The Bot can chat with itself using its output as his next prompt in order to complete
-  your task step by step. 
-
+  your task step by step.
   It can also execute a bash command, read its output and continue with other commands
   until your task is completed.
 

@@ -28,7 +28,7 @@ class AIBackend:
         with open(f"history_{self.h_time}.txt", "a") as h_file:
             h_file.write(f"\n{context}")
 
-    async def get_response(self, msg: str):
+    async def get_response(self, msg: str, current_chat: str):
         self.save_history(f"User: {msg}")
         msg = msg.strip()
 
@@ -44,12 +44,12 @@ class AIBackend:
 
         # Recursive chat loop
         elif msg.startswith("-r"):
-            answer = await recursive_chat(self)
+            answer = await recursive_chat(self, current_chat)
             return answer
 
         # Recursive bash loop
         elif msg.startswith("-:r"):
-            answer = await recursive_bash(self, self.current_chat)
+            answer = await recursive_bash(self, current_chat)
             return answer
 
         # Default mode
