@@ -39,6 +39,7 @@ def main(page: ft.Page):
     # List of available chats
     chat_users = ["Alice", "Bob", "Gruppo"]
     current_chat = "Alice"
+    chat_available = True
 
     # Store messages separately for each chat
     chat_history = {user: ft.Column(expand=True, spacing=10, scroll=ft.ScrollMode.AUTO) for user in chat_users}
@@ -78,11 +79,12 @@ def main(page: ft.Page):
 
     # Handle message send
     def on_submit(e):
-        nonlocal current_chat
+        nonlocal current_chat, chat_available
         user_text = input_field.value.strip()
-        if not user_text:
+        if not user_text or not chat_available:
             return
 
+        chat_available = False
         add_message(user_text, "user")
         input_field.value = ""
         page.update()
@@ -93,8 +95,11 @@ def main(page: ft.Page):
         add_message(backend.response, "bot", target_chat=original_chat)
 
         while backend.is_recursive:
+            chat_available = False
             backend = asyncio.run(get_ai_reply(user_text, original_chat))
             add_message(backend.response, "bot", target_chat=original_chat)
+
+        chat_available = True
 
     send_button = ft.IconButton(icon=ft.Icons.SEND, on_click=on_submit)
 

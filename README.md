@@ -11,8 +11,6 @@ It can answer and execute commands in succession until your task is completed.
 
 - Added different chats. Each chat is independent and doesn't have the memory of the others.
 - Each AI will write messages on their own chat
-- Everything is working fine, but if you talk with 2+ chats simultaneously Gemini 
-  will reach a time-out.
 
 ## 🌟 Overview
 
@@ -44,10 +42,12 @@ I disclaim any liability for unintended consequences resulting from execution.
 
 - **Google Gemini Integration**  
   Leverage the power of Google's Gemini model for intelligent 
-  and context-aware conversations.
+  and context-aware conversations. 
+  <br>Please remember that, in order to avoid Gemini crashes for too-many requests,
+  you can write with 1 AI per time (but as soon you receive the answer you are free to chat again).
 
 - **Independent AI Chats**
-  Each chat has its own memory and history and cannot access the memory of others.
+  <br>Each chat has its own memory and history and cannot access the memory of others.
 
 - **Direct Bash Command Execution (:)**  
   Execute shell commands directly from the chat, 
