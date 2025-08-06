@@ -1,7 +1,13 @@
 import subprocess
+from typing import Dict
 
 
-def bash_method(msg):
+def bash_method(msg: str) -> Dict:
+    """
+    Execute a bash command
+    :param msg: the user command
+    :return: the answer and the settings params
+    """
     command = msg[1:].strip()
 
     try:

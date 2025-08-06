@@ -1,8 +1,15 @@
+from typing import Dict
+
 from backend.ask_gemini import ask_gemini
 import datetime
 
 
-async def file_method(msg: str):
+async def file_method(msg: str) -> Dict:
+    """
+    Create a file on the user local folder
+    :param msg: the prompt of the user (with requirements and the file format)
+    :return: the answer and the settings params
+    """
     query = msg[2:].strip()
     output = await ask_gemini(query)
     response = output['response']

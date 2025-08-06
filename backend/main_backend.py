@@ -1,4 +1,5 @@
 import datetime
+from typing import Dict
 
 from backend.ask_gemini import ask_gemini
 from backend.answer_methods.bash_method import bash_method
@@ -28,7 +29,13 @@ class AIBackend:
         with open(f"history_{self.h_time}.txt", "a") as h_file:
             h_file.write(f"\n{context}")
 
-    async def get_response(self, msg: str, current_chat: str):
+    async def get_response(self, msg: str, current_chat: str) -> Dict:
+        """
+        Main backend function to let AI answer based on the user command, task and chat
+        :param msg: the prompt or command sent by the user
+        :param current_chat: the current chat
+        :return: the answer and the settings params
+        """
         self.save_history(f"User: {msg}")
         msg = msg.strip()
 

@@ -29,6 +29,10 @@ async def get_ai_reply(user_text, current_chat):
 
 
 def main(page: ft.Page):
+    """
+    Main frontend function to create the frontend part
+    :param page: chat page
+    """
     page.title = "AI Chat"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.scroll = ft.ScrollMode.AUTO
@@ -57,6 +61,12 @@ def main(page: ft.Page):
 
     # Add message to the correct chat
     def add_message(text: str, sender: str, target_chat: str = None):
+        """
+        Add the message on the current chat
+        :param text: message received (from user or AI)
+        :param sender: the sender (user or AI)
+        :param target_chat: the chat to send the message
+        """
         nonlocal current_chat
         chat_id = target_chat or current_chat
         color = "#E0E0E0" if sender == "user" else "#DCF8C6"
@@ -79,6 +89,10 @@ def main(page: ft.Page):
 
     # Handle message send
     def on_submit(e):
+        """
+        Call backend in order to receive AI answer and update page
+        :param e: required but not used
+        """
         nonlocal current_chat, chat_available
         user_text = input_field.value.strip()
         if not user_text or not chat_available:
@@ -108,8 +122,11 @@ def main(page: ft.Page):
         alignment=ft.MainAxisAlignment.CENTER,
     )
 
-    # Change chat when user clicks on a name
     def on_chat_select(e):
+        """
+        Change chat when user clicks on a name
+        :param e: chat control
+        """
         nonlocal messages, current_chat
         selected = e.control.data
         if selected == current_chat:

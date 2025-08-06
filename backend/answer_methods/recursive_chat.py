@@ -1,8 +1,17 @@
 import asyncio
+from typing import Dict
+
 from backend.ask_gemini import ask_gemini
 
 
-async def recursive_chat(user_data, current_chat):
+async def recursive_chat(user_data, current_chat) -> Dict:
+    """
+   The AI will chat with itself recursively.
+   It will write one message, pass it as its next input and continue until the user task is completed.
+   :param user_data: user data and settings, received from main_backend
+   :param current_chat: the current chat
+   :return: the answer and the settings params, one for each iteration
+   """
     if current_chat not in user_data.memory:
         user_data.memory[current_chat] = []
     if current_chat not in user_data.task:
