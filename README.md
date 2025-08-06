@@ -11,6 +11,7 @@ It can answer and execute commands in succession until your task is completed.
 
 - Added different chats. Each chat is independent and doesn't have the memory of the others.
 - Each AI will write messages on their own chat
+- Added light/dark themes and each AI has its unique colors (for both themes)
 
 ## 🌟 Overview
 
@@ -59,6 +60,10 @@ I disclaim any liability for unintended consequences resulting from execution.
   It can also execute a bash command, read its output and continue with other commands
   until your task is completed.
 
+- **Light/Dark Themes**
+  <br>Each AI has its unique colors that are used in both the light and dark theme. 
+  User can change between those two themes at will.
+
 - **File-Based Chat History**  
   Your conversation history is automatically saved to a local `.txt` file.
 
@@ -68,7 +73,6 @@ I disclaim any liability for unintended consequences resulting from execution.
 
 - **Improved UI**
   Improve the quality and readability of the frontend part.
-
 
 - **"Memory" via File Processing**  
   Expand the AI's knowledge base by feeding it documents, PDFs, code, and more.

@@ -150,18 +150,21 @@ def main(page: ft.Page):
         expand=True,
     )
 
+    # Container for sidebar chats and theme colors
+    sidebar_container = ft.Container(
+        content=chat_list,
+        width=200,
+        bgcolor=user_color[0] if page.theme_mode == ft.ThemeMode.LIGHT else user_color[1],
+        padding=10,
+    )
+
     page.add(
         ft.Row(
             controls=[
                 ft.Column(
                     controls=[
-                        component_switch_theme(page, chat_history, user_color),
-                        ft.Container(
-                            content=chat_list,
-                            width=200,
-                            bgcolor=sidebar_colors[0] if page.theme_mode == ft.ThemeMode.LIGHT else sidebar_colors[1],
-                            padding=10,
-                        ),
+                        component_switch_theme(page, chat_history, user_color, sidebar_colors, sidebar_container),
+                        sidebar_container,
                     ],
                 ),
                 ft.Column(
