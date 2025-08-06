@@ -3,6 +3,7 @@
 import flet as ft
 from backend.main_backend import AIBackend
 from frontend.components.component_switch_theme import component_switch_theme
+from frontend.settings.page_settings import main_settings
 from marketplace.ai_marketplace import available_ai
 import asyncio
 
@@ -38,16 +39,8 @@ def main(page: ft.Page):
     Main frontend function to create the frontend part
     :param page: chat page
     """
-    page.title = "AI Chat"
-    page.theme_mode = ft.ThemeMode.LIGHT
-    page.scroll = ft.ScrollMode.AUTO
-    page.window_width = 500
-    page.window_height = 700
-    page.padding = 10
-
-    # List of available chats
-    chat_users = aval_ai.keys()
-    current_chat = "Gemini"
+    # Load settings
+    page, chat_users, current_chat = main_settings(page)
     chat_available = True
 
     # Store messages separately for each chat
@@ -71,9 +64,7 @@ def main(page: ft.Page):
         :param sender: the sender (user or AI)
         :param target_chat: the chat to send the message
         """
-        nonlocal current_chat
-        chat_id = target_chat or current_chat
-        color = "#E0E0E0" if sender == "user" else aval_ai[current_chat]['color']
+        color = "#E0E0E0" if sender == "user" else aval_ai[target_chat]['color']
         align = ft.MainAxisAlignment.END if sender == "user" else ft.MainAxisAlignment.START
         bubble = ft.Container(
             content=ft.Text(
@@ -86,7 +77,7 @@ def main(page: ft.Page):
             border_radius=20,
             width=800,
         )
-        chat_history[chat_id].controls.append(
+        chat_history[target_chat].controls.append(
             ft.Row([bubble], alignment=align)
         )
         page.update()
@@ -102,11 +93,10 @@ def main(page: ft.Page):
             return
 
         chat_available = False
-        add_message(user_text, "user")
+        original_chat = current_chat
+        add_message(user_text, "user", target_chat=original_chat)
         input_field.value = ""
         page.update()
-
-        original_chat = current_chat
 
         backend = asyncio.run(get_ai_reply(user_text, original_chat))
         add_message(backend.response, "bot", target_chat=original_chat)
