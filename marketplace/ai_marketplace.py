@@ -20,7 +20,7 @@ def available_ai() -> Dict:
         "Code_Expert": {
             "role": "Code assistant",
             "style": "Funny but technical",
-            "color": "#8403FC",
+            "color": "#36454F",
         }
     }
     return ai_dict

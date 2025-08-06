@@ -26,42 +26,43 @@ class AIBackend:
         :param context: The member (User or Bot) and the message written
         """
         self.history.append(context)
-        with open(f"history_{self.h_time}.txt", "a") as h_file:
+        with open(f"history_{self.h_time}.txt", "a", encoding="utf-8") as h_file:
             h_file.write(f"\n{context}")
 
-    async def get_response(self, msg: str, current_chat: str) -> Dict:
+    async def get_response(self, prompt: str, user_text: str, current_chat: str) -> Dict:
         """
         Main backend function to let AI answer based on the user command, task and chat
-        :param msg: the prompt or command sent by the user
+        :param prompt: the AI settings + the prompt or command sent by the user
+        :param user_text: the message or command written by the user
         :param current_chat: the current chat
         :return: the answer and the settings params
         """
-        self.save_history(f"\n\nUser: {msg}\n")
-        msg = msg.strip()
+        self.save_history(f"\n\nUser: {user_text}\n")
+        prompt = prompt.strip()
 
         # File generation
-        if msg.startswith("-f"):
-            answer = await file_method(msg)
+        if user_text.startswith("-f"):
+            answer = await file_method(prompt)
             return answer
 
         # Bash command
-        elif msg.startswith(":"):
-            answer = bash_method(msg)
+        elif user_text.startswith(":"):
+            answer = bash_method(user_text)
             return answer
 
         # Recursive chat loop
-        elif msg.startswith("-r"):
+        elif user_text.startswith("-r"):
             answer = await recursive_chat(self, current_chat)
             return answer
 
         # Recursive bash loop
-        elif msg.startswith("-:r"):
+        elif user_text.startswith("-:r"):
             answer = await recursive_bash(self, current_chat)
             return answer
 
         # Default mode
         else:
-            prompt = "\n".join(self.history + [f"User: {msg}"])
+            prompt = "\n".join(self.history + [f"User: {prompt}"])
             answer = await ask_gemini(prompt)
             return answer
 

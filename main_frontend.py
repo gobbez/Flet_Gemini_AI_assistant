@@ -2,6 +2,7 @@
 
 import flet as ft
 from backend.main_backend import AIBackend
+from frontend.components.component_switch_theme import component_switch_theme
 from marketplace.ai_marketplace import available_ai
 import asyncio
 
@@ -20,7 +21,7 @@ async def get_ai_reply(user_text, current_chat):
     ai_backend = chat_backends[current_chat]
     ai_backend.user_text = user_text
     prompt = f"{ai_role_style_prompt}. This is the user prompt: {user_text}"
-    answer = await ai_backend.get_response(prompt, current_chat)
+    answer = await ai_backend.get_response(prompt, user_text, current_chat)
 
     ai_backend.response = answer.get('response', '')
     ai_backend.is_recursive = answer.get('is_recursive', False)
@@ -153,15 +154,24 @@ def main(page: ft.Page):
     page.add(
         ft.Row(
             controls=[
-                ft.Container(
-                    content=chat_list,
-                    width=100,
-                    bgcolor="#F0F0F0",
-                    padding=10,
+                ft.Column(
+                    controls=[
+                        ft.Container(
+                            content=component_switch_theme(page),
+                            alignment=ft.alignment.top_right,
+                            padding=ft.padding.only(bottom=10),
+                        ),
+                        ft.Container(
+                            content=chat_list,
+                            width=200,
+                            bgcolor="#F0F0F0",
+                            padding=10,
+                        ),
+                    ],
                 ),
                 ft.Column(
                     controls=[
-                        ft.Text("Your AI Assistant", size=24, weight=ft.FontWeight.BOLD),
+                        ft.Text("Skybound AI", size=24, weight=ft.FontWeight.BOLD),
                         ft.Divider(),
                         messages_column,
                         chat_input
