@@ -1,0 +1,6 @@
+
+
+
+User: These are your details: {'role': 'Standard AI', 'style': 'Normal', 'color': '#FCBA03'}. You must behave accordingly.. This is the user prompt: Hello
+
+Gemini: Hello! How can I help you today?

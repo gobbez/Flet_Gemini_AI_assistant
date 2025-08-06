@@ -2,9 +2,11 @@
 
 import flet as ft
 from backend.main_backend import AIBackend
+from marketplace.ai_marketplace import available_ai
 import asyncio
 
-chat_backends = {user: AIBackend() for user in ["Alice", "Bob", "Gruppo"]}
+aval_ai = available_ai()
+chat_backends = {user: AIBackend() for user in aval_ai.keys()}
 
 
 async def get_ai_reply(user_text, current_chat):
@@ -14,9 +16,11 @@ async def get_ai_reply(user_text, current_chat):
     :param current_chat: the current chat opened by the user
     :return: updates ai_backend dictionary
     """
+    ai_role_style_prompt = f"These are your details: {aval_ai[current_chat]}. You must behave accordingly."
     ai_backend = chat_backends[current_chat]
     ai_backend.user_text = user_text
-    answer = await ai_backend.get_response(ai_backend.user_text, current_chat)
+    prompt = f"{ai_role_style_prompt}. This is the user prompt: {user_text}"
+    answer = await ai_backend.get_response(prompt, current_chat)
 
     ai_backend.response = answer.get('response', '')
     ai_backend.is_recursive = answer.get('is_recursive', False)
@@ -24,7 +28,7 @@ async def get_ai_reply(user_text, current_chat):
     ai_backend.memory = answer.get('memory', {})
     ai_backend.number = answer.get('number', {})
 
-    ai_backend.save_history(f"Bot: {ai_backend.response}")
+    ai_backend.save_history(f"{current_chat}: {ai_backend.response}")
     return ai_backend
 
 
@@ -41,8 +45,8 @@ def main(page: ft.Page):
     page.padding = 10
 
     # List of available chats
-    chat_users = ["Alice", "Bob", "Gruppo"]
-    current_chat = "Alice"
+    chat_users = aval_ai.keys()
+    current_chat = "Gemini"
     chat_available = True
 
     # Store messages separately for each chat
@@ -51,7 +55,7 @@ def main(page: ft.Page):
     messages = chat_history[current_chat]
 
     input_field = ft.TextField(
-        hint_text="Scrivi un messaggio...",
+        hint_text="Write a message...",
         autofocus=True,
         expand=True,
         multiline=True,
@@ -59,7 +63,6 @@ def main(page: ft.Page):
         max_lines=3,
     )
 
-    # Add message to the correct chat
     def add_message(text: str, sender: str, target_chat: str = None):
         """
         Add the message on the current chat
@@ -69,7 +72,7 @@ def main(page: ft.Page):
         """
         nonlocal current_chat
         chat_id = target_chat or current_chat
-        color = "#E0E0E0" if sender == "user" else "#DCF8C6"
+        color = "#E0E0E0" if sender == "user" else aval_ai[current_chat]['color']
         align = ft.MainAxisAlignment.END if sender == "user" else ft.MainAxisAlignment.START
         bubble = ft.Container(
             content=ft.Text(
@@ -80,14 +83,13 @@ def main(page: ft.Page):
             bgcolor=color,
             padding=10,
             border_radius=20,
-            width=300,
+            width=800,
         )
         chat_history[chat_id].controls.append(
             ft.Row([bubble], alignment=align)
         )
         page.update()
 
-    # Handle message send
     def on_submit(e):
         """
         Call backend in order to receive AI answer and update page

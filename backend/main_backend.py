@@ -36,7 +36,7 @@ class AIBackend:
         :param current_chat: the current chat
         :return: the answer and the settings params
         """
-        self.save_history(f"User: {msg}")
+        self.save_history(f"\n\nUser: {msg}\n")
         msg = msg.strip()
 
         # File generation

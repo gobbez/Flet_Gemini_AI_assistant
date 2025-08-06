@@ -1,0 +1,3 @@
+
+User: You role is:Standard AI and your writing style is: Normal. This is the user prompt: Hello
+Gemini: Hello.
