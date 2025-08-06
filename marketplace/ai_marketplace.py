@@ -15,12 +15,14 @@ def available_ai() -> Dict:
         "Gemini": {
             "role": "Standard AI",
             "style": "Normal",
-            "color": "#FCBA03",
+            "color_light": "#FCBA03",
+            "color_dark": "#4D3800",
         },
         "Code_Expert": {
             "role": "Code assistant",
             "style": "Funny but technical",
-            "color": "#36454F",
+            "color_light": "#ABDAFF",
+            "color_dark": "#36454F",
         }
     }
     return ai_dict

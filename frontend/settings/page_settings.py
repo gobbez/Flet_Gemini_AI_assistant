@@ -5,6 +5,7 @@ aval_ai = available_ai()
 
 
 def main_settings(page):
+    # Main page settings
     page.title = "AI Chat"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.scroll = ft.ScrollMode.AUTO
@@ -16,4 +17,10 @@ def main_settings(page):
     chat_users = aval_ai.keys()
     current_chat = "Gemini"
 
-    return page, chat_users, current_chat
+    # User color theme: ['light', 'dark']
+    user_color = ['#E0E0E0', '#424242']
+
+    # sidebar color theme: ['light', 'dark']
+    sidebar_colors = ["#F0F0F0", "#2C2C2C"]
+
+    return page, chat_users, current_chat, user_color, sidebar_colors

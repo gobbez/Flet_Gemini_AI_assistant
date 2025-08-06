@@ -40,7 +40,7 @@ def main(page: ft.Page):
     :param page: chat page
     """
     # Load settings
-    page, chat_users, current_chat = main_settings(page)
+    page, chat_users, current_chat, user_color, sidebar_colors = main_settings(page)
     chat_available = True
 
     # Store messages separately for each chat
@@ -64,7 +64,12 @@ def main(page: ft.Page):
         :param sender: the sender (user or AI)
         :param target_chat: the chat to send the message
         """
-        color = "#E0E0E0" if sender == "user" else aval_ai[target_chat]['color']
+        # color = "#E0E0E0" if sender == "user" else aval_ai[target_chat]['color']
+        if sender == "user":
+            color = user_color[0] if page.theme_mode == ft.ThemeMode.LIGHT else user_color[1]
+        else:
+            color_key = "color_light" if page.theme_mode == ft.ThemeMode.LIGHT else "color_dark"
+            color = aval_ai[target_chat].get(color_key, "#B0BEC5")
         align = ft.MainAxisAlignment.END if sender == "user" else ft.MainAxisAlignment.START
         bubble = ft.Container(
             content=ft.Text(
@@ -132,7 +137,11 @@ def main(page: ft.Page):
     chat_list = ft.Column()
     for user in chat_users:
         chat_list.controls.append(
-            ft.TextButton(text=user, data=user, on_click=on_chat_select)
+            ft.TextButton(
+                text=user,
+                data=user,
+                on_click=on_chat_select
+            )
         )
 
     # Container for dynamic messages
@@ -146,15 +155,11 @@ def main(page: ft.Page):
             controls=[
                 ft.Column(
                     controls=[
-                        ft.Container(
-                            content=component_switch_theme(page),
-                            alignment=ft.alignment.top_right,
-                            padding=ft.padding.only(bottom=10),
-                        ),
+                        component_switch_theme(page, chat_history, user_color),
                         ft.Container(
                             content=chat_list,
                             width=200,
-                            bgcolor="#F0F0F0",
+                            bgcolor=sidebar_colors[0] if page.theme_mode == ft.ThemeMode.LIGHT else sidebar_colors[1],
                             padding=10,
                         ),
                     ],
