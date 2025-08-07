@@ -1,5 +1,3 @@
-# backend/functions/ai_requests.py
-
 from backend.main_backend import AIBackend
 from marketplace.ai_marketplace import available_ai
 

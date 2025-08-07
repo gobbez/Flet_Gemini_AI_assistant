@@ -24,7 +24,12 @@ async def recursive_chat(user_data, current_chat) -> Dict:
     number = user_data.number[current_chat]
     memory = user_data.memory[current_chat]
 
-    context_text = f"User request: {task}"
+    context_text = (
+        f"User request: {task}\n"
+        "You must write one message or explanation at a time. "
+        "You are in an infinite loop where you will receive the output of the previous message you wrote. "
+        "The process where you are in is: user input -> your output -> your output -> your output.. until solution. "
+    )
 
     full_output = ""
 

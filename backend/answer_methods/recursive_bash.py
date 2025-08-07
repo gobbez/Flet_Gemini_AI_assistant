@@ -30,7 +30,9 @@ async def recursive_bash(user_data, current_chat: str) -> Dict:
         "You are a Linux bash assistant and a Penetration Tester. "
         "You have full access to every tool via shell. Generate only one shell command at a time. "
         "Never write comments, introductions or explanations. Write the shell command only. "
-        "Do not include backticks or any Markdown characters in your output. Only give plain bash command."
+        "Do not include backticks or any Markdown characters in your output. Only give plain bash command. "
+        "You are in an infinite loop where you will receive the output of the previous command you wrote. "
+        "The process where you are in is: user input -> your output -> your output -> your output.. until solution. "
     )
 
     full_output = ""

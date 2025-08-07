@@ -18,24 +18,6 @@ def main(page: ft.Page):
     Main frontend function to create the frontend part
     :param page: chat page
     """
-    # Load settings
-    page, chat_users, current_chat, user_color, sidebar_colors = main_settings(page)
-    chat_available = True
-
-    # Store messages separately for each chat
-    chat_history = {user: ft.Column(expand=True, spacing=10, scroll=ft.ScrollMode.AUTO) for user in chat_users}
-
-    messages = chat_history[current_chat]
-
-    input_field = ft.TextField(
-        hint_text="Write a message...",
-        autofocus=True,
-        expand=True,
-        multiline=True,
-        min_lines=1,
-        max_lines=3,
-    )
-
     def on_submit(e):
         """
         Call backend in order to receive AI answer and update page
@@ -62,13 +44,6 @@ def main(page: ft.Page):
 
         chat_available = True
 
-    send_button = ft.IconButton(icon=ft.Icons.SEND, on_click=on_submit)
-
-    chat_input = ft.Row(
-        controls=[input_field, send_button],
-        alignment=ft.MainAxisAlignment.CENTER,
-    )
-
     def on_chat_select(e):
         """
         Change chat when user clicks on a name
@@ -81,6 +56,31 @@ def main(page: ft.Page):
         current_chat = selected
         messages_column.controls[0] = chat_history[current_chat]
         page.update()
+
+    # Load settings
+    page, chat_users, current_chat, user_color, sidebar_colors = main_settings(page)
+    chat_available = True
+
+    # Store messages separately for each chat
+    chat_history = {user: ft.Column(expand=True, spacing=10, scroll=ft.ScrollMode.AUTO) for user in chat_users}
+
+    messages = chat_history[current_chat]
+
+    input_field = ft.TextField(
+        hint_text="Write a message...",
+        autofocus=True,
+        expand=True,
+        multiline=True,
+        min_lines=1,
+        max_lines=3,
+    )
+
+    send_button = ft.IconButton(icon=ft.Icons.SEND, on_click=on_submit)
+
+    chat_input = ft.Row(
+        controls=[input_field, send_button],
+        alignment=ft.MainAxisAlignment.CENTER,
+    )
 
     # Sidebar with chat names
     chat_list = ft.Column()
