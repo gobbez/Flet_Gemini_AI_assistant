@@ -1,37 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+from backend.ai_requests import get_ai_reply
 from backend.main_backend import AIBackend
 from frontend.components.component_switch_theme import component_switch_theme
+from frontend.components.component_add_message import component_add_message
 from frontend.settings.page_settings import main_settings
 from marketplace.ai_marketplace import available_ai
 import asyncio
 
 aval_ai = available_ai()
 chat_backends = {user: AIBackend() for user in aval_ai.keys()}
-
-
-async def get_ai_reply(user_text, current_chat):
-    """
-    Async call to AI
-    :param user_text: user message/prompt/command
-    :param current_chat: the current chat opened by the user
-    :return: updates ai_backend dictionary
-    """
-    ai_role_style_prompt = f"These are your details: {aval_ai[current_chat]}. You must behave accordingly."
-    ai_backend = chat_backends[current_chat]
-    ai_backend.user_text = user_text
-    prompt = f"{ai_role_style_prompt}. This is the user prompt: {user_text}"
-    answer = await ai_backend.get_response(prompt, user_text, current_chat)
-
-    ai_backend.response = answer.get('response', '')
-    ai_backend.is_recursive = answer.get('is_recursive', False)
-    ai_backend.task = answer.get('task', {})
-    ai_backend.memory = answer.get('memory', {})
-    ai_backend.number = answer.get('number', {})
-
-    ai_backend.save_history(f"{current_chat}: {ai_backend.response}")
-    return ai_backend
 
 
 def main(page: ft.Page):
@@ -57,36 +36,6 @@ def main(page: ft.Page):
         max_lines=3,
     )
 
-    def add_message(text: str, sender: str, target_chat: str = None):
-        """
-        Add the message on the current chat
-        :param text: message received (from user or AI)
-        :param sender: the sender (user or AI)
-        :param target_chat: the chat to send the message
-        """
-        # color = "#E0E0E0" if sender == "user" else aval_ai[target_chat]['color']
-        if sender == "user":
-            color = user_color[0] if page.theme_mode == ft.ThemeMode.LIGHT else user_color[1]
-        else:
-            color_key = "color_light" if page.theme_mode == ft.ThemeMode.LIGHT else "color_dark"
-            color = aval_ai[target_chat].get(color_key, "#B0BEC5")
-        align = ft.MainAxisAlignment.END if sender == "user" else ft.MainAxisAlignment.START
-        bubble = ft.Container(
-            content=ft.Text(
-                f"{text}",
-                selectable=True,
-                font_family="Arial",
-            ),
-            bgcolor=color,
-            padding=10,
-            border_radius=20,
-            width=800,
-        )
-        chat_history[target_chat].controls.append(
-            ft.Row([bubble], alignment=align)
-        )
-        page.update()
-
     def on_submit(e):
         """
         Call backend in order to receive AI answer and update page
@@ -99,17 +48,17 @@ def main(page: ft.Page):
 
         chat_available = False
         original_chat = current_chat
-        add_message(user_text, "user", target_chat=original_chat)
+        component_add_message(page, chat_history, user_color, user_text, "user", target_chat=original_chat)
         input_field.value = ""
         page.update()
 
         backend = asyncio.run(get_ai_reply(user_text, original_chat))
-        add_message(backend.response, "bot", target_chat=original_chat)
+        component_add_message(page, chat_history, user_color, backend.response, "bot", target_chat=original_chat)
 
         while backend.is_recursive:
             chat_available = False
             backend = asyncio.run(get_ai_reply(user_text, original_chat))
-            add_message(backend.response, "bot", target_chat=original_chat)
+            component_add_message(page, chat_history, user_color, backend.response, "bot", target_chat=original_chat)
 
         chat_available = True
 
