@@ -115,8 +115,8 @@ To launch your personal AI assistant:
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/gobbez/Flet_Gemini_AI_assistant.git
-cd Flet_Gemini_AI_assistant
+git clone https://github.com/gobbez/Skybound_AI
+cd Skybound_AI
 ```
 
 ### 2. Install dependencies
